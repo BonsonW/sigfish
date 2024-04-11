@@ -343,8 +343,6 @@ static inline void print_help_msg(FILE *fp_help) {
     fprintf(fp_help,"   jnn+dtw: sigfish real genome.fa reads.blow5\n");
 }
 
-#define SAMPLES_PER_EVENT 24 // important note: value may be dependent on pore
-
 int real_main(int argc, char* argv[]) {
 
     const char* optstring = "p:q:t:B:K:v:o:w:hV";
@@ -361,10 +359,14 @@ int real_main(int argc, char* argv[]) {
     opt.num_thread = num_thread;
     opt.debug_paf = "-";
     opt.no_full_ref = !full_ref;
+
+    // r9 values
     opt.dtw_cutoff = 70;
+    opt.samples_per_event = 24;
     opt.query_size_events = 250;
-    opt.query_size_sig = SAMPLES_PER_EVENT * opt.query_size_events;
     opt.pore = 0;
+
+    int32_t user_query_size_events = -1;
 
     //parse the user args
     while ((c = getopt_long(argc, argv, optstring, long_options, &longindex)) >= 0) {
@@ -392,13 +394,11 @@ int real_main(int argc, char* argv[]) {
             full_ref = 1;
             opt.no_full_ref = !full_ref;
         } else if (c == 'q') { //query size
-            opt.query_size_events = atoi(optarg);
-            if (opt.query_size_events < 0) {
+            user_query_size_events = atoi(optarg);
+            if (user_query_size_events <= 0) {
                 ERROR("Query size should larger than 0. You entered %d", opt.query_size_events);
                 exit(EXIT_FAILURE);
             }
-            opt.query_size_sig = SAMPLES_PER_EVENT * opt.query_size_events;
-            opt.dtw_cutoff = 70 * opt.query_size_events / 250;
         }
     }
 
@@ -434,6 +434,20 @@ int real_main(int argc, char* argv[]) {
     if (drna_detect(sp) != 1) {
         ERROR("%s", "Detected something other than RNA data, aborting");
         exit(EXIT_FAILURE);
+    }
+
+    if (opt.pore == OPT_PORE_RNA004) {
+        opt.dtw_cutoff = 70;
+        opt.query_size_events = 150;
+        opt.samples_per_event = 30;
+    } 
+    
+    if (user_query_size_events != -1) {
+        opt.query_size_sig = opt.samples_per_event * user_query_size_events;
+        opt.dtw_cutoff = opt.dtw_cutoff * user_query_size_events / opt.query_size_events;
+        opt.query_size_events = user_query_size_events;
+    } else {
+        opt.query_size_sig = opt.samples_per_event * opt.query_size_events;
     }
 
     if (fasta_file != NULL) {

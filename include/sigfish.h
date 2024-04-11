@@ -285,6 +285,7 @@ typedef struct{
     int query_size_sig;
     int query_size_events;
     int8_t pore;
+    int samples_per_event;
 } sigfish_opt_t;
 
 typedef struct{
