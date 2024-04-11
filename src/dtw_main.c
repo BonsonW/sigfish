@@ -259,22 +259,6 @@ int dtw_main(int argc, char* argv[]) {
         }
     }
 
-    if (opt.prefix_size < 0){
-        if(!(opt.flag & SIGFISH_RNA)){
-            ERROR("%s","DNA does not support auto query start detection.");
-            exit(EXIT_FAILURE);
-        } else {
-            if(opt.flag & SIGFISH_INV){
-                ERROR("%s","Inversion is not compatible with auto query start detection.");
-                exit(EXIT_FAILURE);
-            }
-            if(opt.flag & SIGFISH_END){
-                ERROR("%s","Mapping from query end is not compatible with auto query start detection.");
-                exit(EXIT_FAILURE);
-            }
-        }
-    }
-
     if (slow5file == NULL || fastafile == NULL || fp_help == stdout) {
         print_help_msg(fp_help, opt);
         if(fp_help == stdout){
@@ -285,6 +269,22 @@ int dtw_main(int argc, char* argv[]) {
 
     //initialise the core data structure
     core_t* core = init_core(fastafile, slow5file, opt, realtime0);
+
+    if (core->opt.prefix_size < 0){
+        if(!(core->opt.flag & SIGFISH_RNA)){
+            ERROR("%s","DNA does not support auto query start detection.");
+            exit(EXIT_FAILURE);
+        } else {
+            if(core->opt.flag & SIGFISH_INV){
+                ERROR("%s","Inversion is not compatible with auto query start detection.");
+                exit(EXIT_FAILURE);
+            }
+            if(core->opt.flag & SIGFISH_END){
+                ERROR("%s","Mapping from query end is not compatible with auto query start detection.");
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
 
     int32_t counter=0;
 
