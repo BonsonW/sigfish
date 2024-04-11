@@ -1192,7 +1192,17 @@ sigfish_state_t *init_sigfish(const char *ref_name, int num_channels, sigfish_op
     ASSERT(opt.dtw_cutoff > 0 && opt.dtw_cutoff < 10000);
     ASSERT(opt.query_size_events > 0 && opt.query_size_events < 10000);
     ASSERT(opt.query_size_sig > 0 && opt.query_size_events < 100000);
-    //todo some checks
+    int size_diff = (opt.query_size_sig - opt.samples_per_event * opt.query_size_events);
+    size_diff = size_diff < 0 ? -size_diff : size_diff;
+    if(size_diff > 500){
+        WARNING("The opt.query_size_sig - opt.samples_per_event * opt.query_size_events is a bit too large (%d). Are you sure about what you are doing?", size_diff);
+    }
+    float dtw_dist_diff = (opt.dtw_cutoff - 70.0/250*opt.query_size_events); //70 score for 250 seem to hold true for rna002 and rna004
+    dtw_dist_diff = dtw_dist_diff < 0 ? -dtw_dist_diff : dtw_dist_diff;
+    if(dtw_dist_diff > 10){
+        WARNING("The opt.dtw_cutoff - 70/250*opt.query_size_events is a bit too large (%f). Are you sure about what you are doing?", dtw_dist_diff);
+    }
+    //do some checks
 
     state->status = (enum sigfish_status*)calloc(num_channels,sizeof(enum sigfish_status));
     MALLOC_CHK(state->status);
