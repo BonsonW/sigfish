@@ -99,7 +99,7 @@ typedef struct {
     .seg_dist = 200, \
     .window = 250, \
     .stall_len = 1.0, \
-    .error = 42, \
+    .error = 30, \
     .offset = 44, \
     .range = 32, \
 } \
