@@ -343,6 +343,8 @@ static inline void print_help_msg(FILE *fp_help) {
     fprintf(fp_help,"   jnn+dtw: sigfish real genome.fa reads.blow5\n");
 }
 
+#define DTW_SCALE (70/250)
+
 int real_main(int argc, char* argv[]) {
 
     const char* optstring = "p:q:t:B:K:v:o:w:hV";
@@ -444,7 +446,7 @@ int real_main(int argc, char* argv[]) {
     
     if (user_query_size_events != -1) {
         opt.query_size_sig = opt.samples_per_event * user_query_size_events;
-        opt.dtw_cutoff = opt.dtw_cutoff * user_query_size_events / opt.query_size_events;
+        opt.dtw_cutoff = DTW_SCALE * opt.query_size_events;
         opt.query_size_events = user_query_size_events;
     } else {
         opt.query_size_sig = opt.samples_per_event * opt.query_size_events;
