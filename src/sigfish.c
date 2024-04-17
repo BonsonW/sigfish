@@ -1629,6 +1629,8 @@ void process_sigfish_single(sigfish_state_t *state, sigfish_read_t *read_batch, 
 
 enum sigfish_status *process_sigfish(sigfish_state_t *state, sigfish_read_t *read_batch, int batch_size){
 
+    double start = realtime();
+
     enum sigfish_status *status = (enum sigfish_status *)calloc(state->num_channels,sizeof(enum sigfish_status));
     MALLOC_CHK(status);
     state->status_ret = status;
@@ -1647,6 +1649,9 @@ enum sigfish_status *process_sigfish(sigfish_state_t *state, sigfish_read_t *rea
             }
         }
     }
+
+    double end = realtime();
+    VERBOSE("%d queries processed in %f seconds",batch_size,end-start);
 
     return status;
 }
