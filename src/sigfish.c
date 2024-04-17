@@ -664,7 +664,8 @@ static char *paf_str(aln_t *aln, char *read_id, char *rname, uint64_t start_raw_
     sprintf_append(sp, "%d\t",aln->mapq); // Mapq
     sprintf_append(sp, "tp:A:P\t");
     sprintf_append(sp, "d1:f:%.2f\t",aln->score); // distance of the best match
-    sprintf_append(sp, "d2:f:%.2f",aln->score2); // distance of the second best matcj
+    sprintf_append(sp, "d2:f:%.2f\t",aln->score2); // distance of the second best matcj
+    sprintf_append(sp,"en:i:%d",query_size); // number of events in the mapped segment
 
     sprintf_append(sp, "\n");
     str.s[str.l] = '\0';
@@ -1334,12 +1335,13 @@ char *sprintf_aln(int64_t start_event_idx, int64_t end_event_idx, event_table et
     sprintf_append(sp,"%d\t",aln.mapq); // Mapq
     sprintf_append(sp,"tp:A:P\t");
     sprintf_append(sp,"d1:f:%.2f\t",aln.score); // distance of the best match
-    sprintf_append(sp,"d2:f:%.2f\n",aln.score2); // distance of the second best matcj
+    sprintf_append(sp,"d2:f:%.2f\t",aln.score2); // distance of the second best matcj
+    sprintf_append(sp,"en:i:%d\n",query_size); // number of events in the mapped segment
 
     return sp->s;
 }
 
-aln_t map(refsynth_t *ref, float *raw, int64_t nsample, int polyend, char *read_id, char **sp, sigfish_opt_t opt){
+aln_t map(refsynth_t *ref, float *raw, int64_t nsample, int polyend, char *read_id, char **sp, sigfish_opt_t opt, int *nevents){
     ASSERT(ref != NULL);
     ASSERT(raw != NULL);
     ASSERT(nsample > 0);
@@ -1401,6 +1403,7 @@ aln_t map(refsynth_t *ref, float *raw, int64_t nsample, int polyend, char *read_
         } else {
             *sp=NULL;
         }
+        *nevents = qlen;
     }
     free(et.event);
 
@@ -1539,10 +1542,12 @@ void decide(sigfish_rstate_t *r, sigfish_state_t *state, int channel, enum sigfi
                         sprintf(tmp, "read_%d_channel_%d", r->read_number, channel+1);
                         read_id = tmp;
                     }
+                    int nevents = state->opt.query_size_events;
                     char **sp = state->debug ? &(state->debug[i]) : NULL;
-                    aln_t best_aln=map(state->ref, sig_store, sig_store_i, st, read_id, sp, state->opt);
+                    aln_t best_aln=map(state->ref, sig_store, sig_store_i, st, read_id, sp, state->opt, &nevents);
+                    ASSERT(nevents>0)
                     //if(state->debug[i])fprintf(stderr,"%s",state->debug[i]);
-                    if(best_aln.score < state->opt.dtw_cutoff){
+                    if(best_aln.score < state->opt.dtw_cutoff * (nevents) / state->opt.query_size_events){
                         state->status[channel] = status[i] = SIGFISH_REJECT;
                     } else {
                         state->status[channel] = status[i] = SIGFISH_CONT;
