@@ -101,7 +101,7 @@ typedef struct {
     .stall_len = 1.0, \
     .error = 30, \
     .offset = 44, \
-    .range = 32, \
+    .range = 34, \
 } \
 
 typedef struct jnnv3_pstate_s {
