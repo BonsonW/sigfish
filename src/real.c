@@ -112,8 +112,9 @@ void jnn_v3(const float *raw, int64_t nsample, jnnv3_aparam_t param, jnnv3_astat
 
             if (leftover >= opt.query_size_sig) {
                 //fprintf(stderr,"leftover: %d, running DTW\n", leftover);
+                int qlen = opt.query_size_events;
                 if (ref) {
-                    best_aln = map(ref, sig_store, sig_store_i, st, read_id, &paf, opt);
+                    best_aln = map(ref, sig_store, sig_store_i, st, read_id, &paf, opt, &qlen);
                 }
                 break;
             } else {
