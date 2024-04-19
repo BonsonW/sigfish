@@ -34,11 +34,11 @@ typedef struct {
     .std_scale = 0.3, \
     .corrector = 800, \
     .seg_dist = 1200, \
-    .window = 100, \
+    .window = 300, \
     .error = 5, \
     .min_seg_len = 1200, \
-    .chunk_size = 600, \
-    .start_chunks = 3, \
+    .chunk_size = 1600, \
+    .start_chunks = 1, \
 } \
 
 typedef struct jnnv3_astate_s {
