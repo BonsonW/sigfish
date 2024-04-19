@@ -37,8 +37,8 @@ typedef struct {
     .window = 100, \
     .error = 5, \
     .min_seg_len = 1200, \
-    .chunk_size = 500, \
-    .start_chunks = 4, \
+    .chunk_size = 600, \
+    .start_chunks = 3, \
 } \
 
 typedef struct jnnv3_astate_s {
