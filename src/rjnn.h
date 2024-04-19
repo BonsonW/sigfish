@@ -34,10 +34,10 @@ typedef struct {
     .std_scale = 0.3, \
     .corrector = 800, \
     .seg_dist = 1200, \
-    .window = 100, \
+    .window = 300, \
     .error = 5, \
     .min_seg_len = 1200, \
-    .chunk_size = 600, \
+    .chunk_size = 1400, \
     .start_chunks = 3, \
 } \
 
@@ -99,9 +99,9 @@ typedef struct {
     .seg_dist = 200, \
     .window = 250, \
     .stall_len = 1.0, \
-    .error = 30, \
+    .error = 42, \
     .offset = 44, \
-    .range = 34, \
+    .range = 32, \
 } \
 
 typedef struct jnnv3_pstate_s {
