@@ -89,7 +89,7 @@ void jnnv3_acore(jnnv3_astate_t *s, jnnv3_aparam_t param, float *chunk, int curr
             if (s->prev_err) {
                 s->prev_err = 0;
             }
-            if (s->c >= window && s->c >= s->w  && !(s->c % s->w ) && s->err > 0) { // if current window longer than detect limit, and corrector, and is divisible by corrector, and err is greater than 1
+            if (s->c >= window && s->c >= s->w  && !(s->c % s->w) && s->err > 0) { // if current window longer than detect limit, and corrector, and is divisible by corrector, and err is greater than 1
                 s->err -= 1; // drop current error count by 1
             }
         } else { // not within range
@@ -99,7 +99,7 @@ void jnnv3_acore(jnnv3_astate_t *s, jnnv3_aparam_t param, float *chunk, int curr
                     s->err++;
                     s->prev_err++;
                 }
-                if (s->c >= window && s->c >= s->w  && !(s->c % s->w ) && s->err > 0) {
+                if (s->c >= window && s->c >= s->w && !(s->c % s->w) && s->err > 0) {
                     s->err -= 1;
                 }
             } else if (s->prev) {
@@ -109,7 +109,7 @@ void jnnv3_acore(jnnv3_astate_t *s, jnnv3_aparam_t param, float *chunk, int curr
                     if (s->seg_i && s->start - s->segs[s->seg_i-1].y <= seg_dist) { // if segs very close, merge them
                         s->segs[s->seg_i-1].y = s->end;
                     } else {
-                        if(s->seg_i>=s->seg_c){
+                        if (s->seg_i >= s->seg_c) {
                             s->seg_c *= 2;
                             s->segs = (jnn_pair_t *)realloc(s->segs,sizeof(jnn_pair_t)*s->seg_c);
                             MALLOC_CHK(s->segs);
@@ -139,6 +139,10 @@ void jnnv3_acore(jnnv3_astate_t *s, jnnv3_aparam_t param, float *chunk, int curr
             } else {
                 continue;
             }
+        }
+        
+        if (s->adapter_found) {
+            break;
         }
     }
 }
