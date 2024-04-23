@@ -31,7 +31,7 @@ typedef struct {
     .chunk_size = 1200, \
     .start_chunks = 6, \
     .no_err_thresh = 800, \
-    .skip_samples = 1 \
+    .skip_samples = 2 \
 } \
 
 #define JNNV3_RNA004_ADAPTOR { \
@@ -44,7 +44,7 @@ typedef struct {
     .chunk_size = 500, \
     .start_chunks = 4, \
     .no_err_thresh = 800, \
-    .skip_samples = 1 \
+    .skip_samples = 2 \
 } \
 
 typedef struct jnnv3_astate_s {
