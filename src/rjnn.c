@@ -17,7 +17,7 @@ jnnv3_astate_t *init_jnnv3_astate(jnnv3_aparam_t param){
     state->err = 0;       // total error
     state->prev_err = 0;  // consecutive error
     state->c = 0;         // counter
-    state->w = param.corrector;       // window to increase total error thresh (corrector)
+    //state->w = param.corrector;       // window to increase total error thresh (corrector)
     state->start = 0;     // start pos
     state->end = 0;       // end pos
     state->adapter_found = 0;
@@ -45,7 +45,7 @@ void reset_jnnv3_astate(jnnv3_astate_t *state, jnnv3_aparam_t param){
     state->err = 0;       // total error
     state->prev_err = 0;  // consecutive error
     state->c = 0;         // counter
-    state->w = param.corrector;       // window to increase total error thresh (corrector)
+    //state->w = param.corrector;       // window to increase total error thresh (corrector)
     state->start = 0;     // start pos
     state->end = 0;       // end pos
     state->adapter_found = 0;
@@ -70,7 +70,7 @@ void jnnv3_acore(jnnv3_astate_t *s, jnnv3_aparam_t param, float *chunk, int curr
     const int window = param.window; //Minimum segment window size to be detected
     const int error = param.error; //Allowable error in segment algorithm
     // const int min_seg_len = param.min_seg_len; //Minimum length of a segment to be constructed
-
+    const int w = param.corrector;
 
     for (int i = 0; i < current_chunk_size; i++){
         s->sig_length++;
@@ -87,7 +87,7 @@ void jnnv3_acore(jnnv3_astate_t *s, jnnv3_aparam_t param, float *chunk, int curr
             if (s->prev_err) {
                 s->prev_err = 0;
             }
-            if (s->c >= window && s->c >= s->w  && !(s->c % s->w) && s->err > 0) { // if current window longer than detect limit, and corrector, and is divisible by corrector, and err is greater than 1
+            if (s->c >= window && s->c >= w  && !(s->c % w) && s->err > 0) { // if current window longer than detect limit, and corrector, and is divisible by corrector, and err is greater than 1
                 s->err -= 1; // drop current error count by 1
             }
         } else { // not within range
@@ -97,7 +97,7 @@ void jnnv3_acore(jnnv3_astate_t *s, jnnv3_aparam_t param, float *chunk, int curr
                     s->err++;
                     s->prev_err++;
                 }
-                if (s->c >= window && s->c >= s->w && !(s->c % s->w) && s->err > 0) {
+                if (s->c >= window && s->c >= w && !(s->c % w) && s->err > 0) {
                     s->err -= 1;
                 }
             } else if (s->prev) {
@@ -138,7 +138,7 @@ void jnnv3_acore(jnnv3_astate_t *s, jnnv3_aparam_t param, float *chunk, int curr
                 continue;
             }
         }
-        
+
         // if (s->adapter_found) {
         //     break;
         // }

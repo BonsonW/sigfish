@@ -50,7 +50,7 @@ typedef struct jnnv3_astate_s {
     int err;       // total error
     int prev_err;  // consecutive error
     int c;         // counter
-    int w;       // window to increase total error thresh (corrector)
+    //int w;       // window to increase total error thresh (corrector)
     int start;     // start pos
     int end;       // end pos
     int8_t adapter_found;
