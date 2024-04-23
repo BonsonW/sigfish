@@ -16,6 +16,7 @@ typedef struct {
     int min_seg_len; // this will affect polyA detection too, make sure it's not too high (cutting somewhere is better than nowhere)
     int chunk_size;
     int start_chunks; // num of chunks to store before processing
+    int no_err_thresh; // num of chunks to store before processing
 } jnnv3_aparam_t;
 
 //dRNA realtime adaptor
@@ -28,17 +29,19 @@ typedef struct {
     .min_seg_len = 4000, \
     .chunk_size = 1200, \
     .start_chunks = 6, \
+    .no_err_thresh = 800, \
 } \
 
 #define JNNV3_RNA004_ADAPTOR { \
-    .std_scale = 0.3, \
-    .corrector = 800, \
-    .seg_dist = 1200, \
-    .window = 300, \
+    .std_scale = 1.0, \
+    .corrector = 1200, \
+    .seg_dist = 800, \
+    .window = 100, \
     .error = 5, \
     .min_seg_len = 1200, \
-    .chunk_size = 1600, \
-    .start_chunks = 3, \
+    .chunk_size = 500, \
+    .start_chunks = 4, \
+    .no_err_thresh = 800, \
 } \
 
 typedef struct jnnv3_astate_s {
@@ -100,8 +103,8 @@ typedef struct {
     .window = 250, \
     .stall_len = 1.0, \
     .error = 30, \
-    .offset = 44, \
-    .range = 32, \
+    .offset = 30, \
+    .range = 20, \
 } \
 
 typedef struct jnnv3_pstate_s {

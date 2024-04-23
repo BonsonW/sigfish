@@ -7,6 +7,8 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
+export SIGTK_PLOT_MTD=python
+
 slow5tools skim --rid ${1} | while read p 
 do
     ./scripts/plot_prefix.sh ${1} ${p} && rm sigfish_${p}.tmp && rm sigfish_${p}.prefix.tmp || exit 0
