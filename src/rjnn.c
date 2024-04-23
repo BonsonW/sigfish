@@ -58,10 +58,9 @@ void reset_jnnv3_astate(jnnv3_astate_t *state, jnnv3_aparam_t param){
 
 
 void jnnv3_acalc_param(jnnv3_astate_t *s, jnnv3_aparam_t param, float *sig_store, int sig_size) {
-    ASSERT(sig_size - param.skip_samples > 0);
-    s->median = medianf(sig_store + param.skip_samples,sig_size - param.skip_samples);
+    s->median = medianf(sig_store,sig_size);
     // use this with outlier rejection to fix s->stdev thresholds
-    s->stdev = stdvf(sig_store + param.skip_samples,sig_size - param.skip_samples);
+    s->stdev = stdvf(sig_store,sig_size);
     s->top = s->median + (s->stdev * param.std_scale);
 }
 

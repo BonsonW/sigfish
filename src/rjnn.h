@@ -17,7 +17,6 @@ typedef struct {
     int chunk_size;
     int start_chunks; // num of chunks to store before processing
     int no_err_thresh; // num of chunks to store before processing
-    int skip_samples; // skip sample at the start of chunk for med and stdev calcs
 } jnnv3_aparam_t;
 
 //dRNA realtime adaptor
@@ -31,7 +30,6 @@ typedef struct {
     .chunk_size = 1200, \
     .start_chunks = 6, \
     .no_err_thresh = 800, \
-    .skip_samples = 2 \
 } \
 
 #define JNNV3_RNA004_ADAPTOR { \
@@ -44,7 +42,6 @@ typedef struct {
     .chunk_size = 500, \
     .start_chunks = 4, \
     .no_err_thresh = 800, \
-    .skip_samples = 2 \
 } \
 
 typedef struct jnnv3_astate_s {
