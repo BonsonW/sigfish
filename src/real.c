@@ -319,7 +319,7 @@ int jnn_dtw_mt_main(slow5_file_t *sp, const char *fasta_file, sigfish_opt_t opt)
 
         enum sigfish_status *status = process_sigfish(state, reads, i);
         for (int j = 0; j < i; j++) {
-            fprintf(stderr, "channel %d: %d\n", j+1, status[j]);
+            // fprintf(stderr, "channel %d: %d\n", j+1, status[j]);
         }
 
         free(status);

@@ -1337,6 +1337,12 @@ char *sprintf_aln(int64_t start_event_idx, int64_t end_event_idx, event_table et
     sprintf_append(sp,"d1:f:%.2f\t",aln.score); // distance of the best match
     sprintf_append(sp,"d2:f:%.2f\t",aln.score2); // distance of the second best matcj
     sprintf_append(sp,"en:i:%d\n",query_size); // number of events in the mapped segment
+    
+    if (end_raw_idx > len_raw_signal) {
+        fprintf(stderr, "error: %s\n", sp->s);
+        fprintf(stderr, "end = %ld - %f", et.event[end_event_idx].start, et.event[end_event_idx].length);
+    }
+
 
     return sp->s;
 }
