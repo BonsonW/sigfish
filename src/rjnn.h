@@ -36,11 +36,11 @@ typedef struct {
     .std_scale = 0.3, \
     .corrector = 1200, \
     .seg_dist = 800, \
-    .window = 100, \
-    .error = 7, \
+    .window = 300, \
+    .error = 5, \
     .min_seg_len = 1200, \
-    .chunk_size = 500, \
-    .start_chunks = 4, \
+    .chunk_size = 1000, \
+    .start_chunks = 2, \
     .no_err_thresh = 800, \
 } \
 
