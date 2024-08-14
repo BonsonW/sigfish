@@ -39,7 +39,7 @@ typedef struct {
     .window = 300, \
     .error = 5, \
     .min_seg_len = 1200, \
-    .chunk_size = 1000, \
+    .chunk_size = 1600, \
     .start_chunks = 2, \
     .no_err_thresh = 800, \
 } \
